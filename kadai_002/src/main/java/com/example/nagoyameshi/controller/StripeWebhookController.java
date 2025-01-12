@@ -192,7 +192,7 @@ public class StripeWebhookController {
         request.getSession().invalidate();
 
         // リダイレクト時にフラッシュ属性でメッセージを設定
-        redirectAttributes.addFlashAttribute("successMessage", "有料会員登録が完了しました。");
+        redirectAttributes.addFlashAttribute("successMessage", "有料会員登録が完了しました。ログインし直してください。");
 
         // ホームにリダイレクト
         return "redirect:/";
