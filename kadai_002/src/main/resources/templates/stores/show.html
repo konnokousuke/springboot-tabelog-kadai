@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <div th:replace="~{fragment :: styles}"></div>
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <title>店舗詳細</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <!-- ヘッダー -->
+        <div th:replace="~{fragment :: header}"></div>
+        
+                                         <!-- 成功メッセージの表示 -->
+<div th:if="${successMessage}" class="no-border-message">
+    <span th:text="${successMessage}"></span>
+</div>
+        
+        <!-- お気に入り登録機能 -->
+        <div sec:authorize="isAuthenticated()" th:if="${isPaidMember}" class="favorite-button-wrapper">
+            <div class="favorite-container">
+                <button
+                    class="favoriteButton btn btn-outline-primary w-100"
+                    th:data-item-id="${store.storeId}"
+                    th:data-favorited="${favorited}"
+                    th:classappend="${favorited} ? 'favorited' : ''"> 
+                    <span class="star" th:text="${(favorited ?: false) ? '★' : '☆'}"></span>
+                    <span class="text" th:text="${favorited != null and favorited ? 'お気に入り登録済み' : 'お気に入り登録する'}"></span>
+                </button>
+            </div>
+        </div>
+                                    
+        <div sec:authorize="isAuthenticated()" th:if="${!isPaidMember}" class="free-favorite-button-wrapper">
+            <div class="card">
+                <div class="card-body">
+                    <p class="favorite-card-text">お気に入り登録するには有料会員アカウントで<br>
+                    <a th:href="@{/login}">ログイン</a>が必要です。</p>
+                    <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn" disabled>☆お気に入り登録する</button>
+                </div>
+            </div>
+        </div>
+                                    
+        <div sec:authorize="!isAuthenticated()" class="free-favorite-button-wrapper">
+            <div class="card">
+                <div class="card-body">
+                    <p class="favorite-card-text">お気に入り登録するには有料会員アカウントで<br>
+                    <a th:href="@{/login}">ログイン</a>が必要です。</p>
+                    <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn" disabled>☆お気に入り登録する</button>
+                </div>
+            </div>
+        </div>
+        
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-9 col-xl-10 col-lg-11">
+                        <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">                        
+                                <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                                <li class="breadcrumb-item"><a th:href="@{/stores}">店舗一覧</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">店舗詳細</li>
+                            </ol>
+                        </nav>                      
+
+                        <h1 class="mb-4 text-center" th:text="${store != null ? store.getStoreName() : '店舗情報が見つかりません'}"></h1>
+
+                        <!-- storeがnullの場合のエラーメッセージ -->
+                        <div th:if="${store == null}" class="alert alert-danger">
+                            <span>店舗情報が見つかりません。お手数ですが、再度お試しください。</span>
+                        </div>
+
+                        <!-- storeが存在する場合の情報表示 -->
+                        <div th:if="${store != null}">
+                            <div th:if="${errorMessage}" class="alert alert-danger">
+                                <span th:text="${errorMessage}"></span>
+                            </div>
+
+                            <div class="mb-4">
+                                <img th:if="${store.getImageFilename()}" th:src="@{/storage/__${store.getImageFilename()}__}" class="w-100" alt="店舗画像">
+                                <img th:unless="${store.getImageFilename()}" th:src="@{/images/noImage.png}" class="w-100" alt="NO IMAGE">
+                            </div> 
+                            
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-8 container mb-4">            
+                                        <!-- 各種店舗情報の表示 -->
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-4">
+                                                <span class="fw-bold">店舗名</span>
+                                            </div>
+                                            <div class="col">
+                                                <span th:text="${store.getStoreName()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-4">
+                                                <span class="fw-bold">説明</span>
+                                            </div>
+                                            <div class="col">
+                                                <span class="nagoyameshi-pre-wrap" th:text="${store.getDescription()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-4">
+                                                <span class="fw-bold">料金</span>
+                                            </div>
+                                            <div class="col">
+                                                <span th:text="${#numbers.formatInteger(store.getPrice(), 1, 'COMMA') + '円'}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-4">
+                                                <span class="fw-bold">郵便番号</span>
+                                            </div>
+                                            <div class="col">
+                                                <span th:text="${store.getPostalCode()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-4">
+                                                <span class="fw-bold">住所</span>
+                                            </div>
+                                            <div class="col">
+                                                <span th:text="${store.getAddress()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-4">
+                                                <span class="fw-bold">電話番号</span>
+                                            </div>
+                                            <div class="col">
+                                                <span th:text="${store.getPhoneNumber()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-4">
+                                                <span class="fw-bold">営業時間</span>
+                                            </div>
+                                            <div class="col">
+                                                <span th:text="${store.getOpeningHours()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-4">
+                                                <span class="fw-bold">定休日</span>
+                                            </div>
+                                            <div class="col">
+                                                <span th:text="${store.getClosedDays()}"></span>
+                                            </div>
+                                        </div>                              
+                                    </div>
+
+                                    <!-- ログイン状態に応じた予約フォーム -->
+                                    <div sec:authorize="!isAuthenticated()" class="col-lg-4 px-0 ps-lg-4 mb-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p class="card-text">予約するには有料会員アカウントで<br>
+                                                <a th:href="@{/login}">ログイン</a>が必要です。</p>
+                                                <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn" disabled>予約する</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                               
+                                    <div sec:authorize="isAuthenticated()" th:if="${isPaidMember}" class="col-lg-4 px-0 ps-lg-4 mb-4">
+                                        <form th:action="@{/stores/{id}/reserve(id=${store.storeId})}" th:object="${reservationInputForm}" method="post">
+                                            <input type="hidden" name="storeId" th:value="${store.storeId}">
+                                            <div>
+                                                <label for="reservationDatetime">予約日時:</label>
+                                                <input type="text" id="reservationDatetime" th:field="*{reservationDatetime}" class="flatpickr"/>
+                                            </div>
+                                            <div>
+                                                <label for="numberOfPeople">予約人数:</label>
+                                                <input type="number" id="numberOfPeople" th:field="*{numberOfPeople}" min="1"/>
+                                            </div>
+                                            <div>
+                                                <button type="submit">予約する</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div sec:authorize="isAuthenticated()" th:if="${!isPaidMember}" class="col-lg-4 px-0 ps-lg-4 mb-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p class="card-text">予約するには有料会員アカウントで<br>
+                                                <a th:href="@{/login}">ログイン</a>が必要です。</p>
+                                                <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn" disabled>予約する</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="reviews-section mt-4">
+    <h2>レビュー一覧</h2>
+
+    <!-- 平均評価の表示 -->
+    <div class="average-rating mb-3">
+        <span class="fw-bold">平均評価:</span>
+        <span th:text="${averageRatingFormatted}"></span>
+    </div>
+
+    <!-- ログイン状態によるレビュー投稿表示制御 -->
+    <div sec:authorize="!isAuthenticated()">
+        <!-- 未ログインの場合 -->
+         <p>レビューを閲覧するには<a th:href="@{/login}">ログイン</a>が必要です。</p>
+         <p>レビューを投稿するには有料会員のアカウントで<a th:href="@{/login}">ログイン</a>が必要です。</p>
+        <div class="review-content blurred">
+            <div class="blurred">
+                <p>名前<br>☆☆☆☆☆<br>料理がとても美味しく、サービスも最高でした。また来たいです。</p>
+            </div>
+        </div>
+    </div>
+    <!-- 無料会員の場合 -->
+    <div sec:authorize="isAuthenticated()" th:if="${!isPaidMember}">
+		<p>レビューを投稿するには有料会員のアカウントで<a th:href="@{/login}">ログイン</a>が必要です。</p>
+    </div>
+    
+    <!-- 有料会員の場合 -->
+    <div sec:authorize="isAuthenticated()" th:if="${isPaidMember}">
+        <a th:href="@{/stores/{storeId}/reviews/new(storeId=${store.storeId})}" class="btn btn-primary mb-3 custom-btn">レビューを投稿する</a>
+    </div>
+
+    <!-- レビュー一覧 -->
+    <!-- レビュー一覧表示 -->
+    <div th:if="${reviews != null and !reviews.isEmpty()}" sec:authorize="isAuthenticated()">
+        <ul class="list-group">
+            <li class="list-group-item" th:each="review : ${reviews}">
+                <div>
+                    <strong th:text="${review.member.name}"></strong>
+                </div>
+                <div>
+                    <span th:each="i : ${#numbers.sequence(1, 5)}"
+                          th:classappend="${i <= review.rating} ? 'text-warning' : 'text-muted'">
+                        ★
+                    </span>
+                </div>
+                <div>
+                    <p th:text="${review.comment}"></p>
+                </div>
+                <small th:text="${#dates.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+            </li>
+        </ul>
+    </div>
+
+    <!-- レビューがない場合のメッセージ -->
+    <div th:if="${reviews == null or reviews.isEmpty()}" sec:authorize="isAuthenticated()" class="alert alert-warning">
+        この店舗にはまだレビューがありません。
+    </div>
+</div>
+                                </div>
+                            </div>                                                                                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- フッター -->
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>    
+    
+    <div th:replace="~{fragment :: scripts}"></div>
+    
+    <!-- Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    <script th:src="@{/js/flatpickr.js}"></script>
+    <script src="/js/favorite.js"></script>
+</body>
+</html>

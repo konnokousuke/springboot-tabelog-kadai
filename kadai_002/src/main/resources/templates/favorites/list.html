@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>お気に入り一覧</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <!-- ヘッダー -->
+        <div th:replace="~{fragment :: header}"></div>
+
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+				<div class="row justify-content-center">
+					 <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">お気に入り一覧</li>
+                        </ol>
+                    </nav>
+                <h1 class="mb-4 text-center">お気に入り一覧</h1>
+
+                <!-- お気に入りがない場合のメッセージ -->
+                <div th:if="${favoritePage.empty}">
+                    <p>お気に入り登録された店舗がありません。</p>
+                </div>
+
+                <!-- お気に入りリスト -->
+                <div th:unless="${favoritePage.empty}">
+                    <div class="list-group">
+                        <div th:each="favorite : ${favoritePage.content}" class="list-group-item"th:id="'favorite-item-' + ${favorite.store.storeId}">
+                            <!-- 店舗名とリンク -->
+                            <a th:href="@{/stores/{id}(id=${favorite.store.storeId})}">
+                                <h5 th:text="${favorite.store.storeName}"></h5>
+                            </a>
+                            <!-- 店舗の説明 -->
+                            <p th:text="${favorite.store.description}"></p>
+
+                            <!-- 「お気に入り解除」ボタン -->
+                            <button class="btn remove-favorite-btn mt-2"
+                                    th:onclick="'removeFavorite(' + ${favorite.store.storeId} + ')'">
+                                お気に入り解除
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ページネーション -->
+                    <nav th:if="${favoritePage.totalPages > 1}" aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <!-- 前のページ -->
+                            <li class="page-item" th:classappend="${favoritePage.first ? 'disabled' : ''}">
+                                <a class="page-link" th:href="@{/favorites(page=${favoritePage.number - 1})}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!-- 各ページ番号 -->
+                            <li class="page-item" th:each="page : ${#numbers.sequence(0, favoritePage.totalPages - 1)}"
+                                th:classappend="${page == favoritePage.number ? 'active' : ''}">
+                                <a class="page-link" th:href="@{/favorites(page=${page})}" th:text="${page + 1}"></a>
+                            </li>
+                            <!-- 次のページ -->
+                            <li class="page-item" th:classappend="${favoritePage.last ? 'disabled' : ''}">
+                                <a class="page-link" th:href="@{/favorites(page=${favoritePage.number + 1})}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>      
+                </div>
+              </div>
+            </div>
+        </main>
+
+        <!-- フッター -->
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+
+    <!-- スクリプト -->
+    <div th:replace="~{fragment :: scripts}"></div>
+
+    <!-- JavaScript: お気に入り解除用 -->
+    <script th:inline="javascript">
+		const csrfToken = /*[[${_csrf.token}]]*/ '';
+    function removeFavorite(storeId) {
+        if (confirm('この店舗をお気に入りから解除しますか？')) {
+            fetch(`/api/favorites/remove/${storeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken 
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // 該当のリスト項目を削除
+                    const item = document.querySelector(`#favorite-item-${storeId}`);
+                    if (item) {
+                        item.remove();
+                    }
+                } else {
+                    alert('解除に失敗しました。もう一度お試しください。');
+                }
+            })
+            .catch(error => {
+                console.error('お気に入り解除エラー:', error);
+                alert('エラーが発生しました。もう一度お試しください。');
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

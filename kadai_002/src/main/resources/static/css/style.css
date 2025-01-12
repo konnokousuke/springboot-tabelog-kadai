@@ -1,0 +1,586 @@
+html {
+    font-size: 14px;
+}
+
+body {
+    font-family : 'Noto Sans JP', sans-serif;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+h2 {
+    font-size: 1.475rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+a {
+    color: #ef990d;
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #407784;
+}
+
+footer {
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    background-color: #f2f0eb;
+}
+
+.nagoyameshi-wrapper {
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 60px;
+    box-sizing: border-box;
+}
+
+.nagoyameshi-navbar {
+    min-height: 60px;
+}
+
+.nagoyameshi-logo {
+    height: 30px;
+}
+
+.nagoyameshi-btn {
+    background-color: #ef990d !important;
+    transition: 0.1s;
+    color: white;
+}
+
+.nagoyameshi-btn:hover {
+    opacity: 0.8;
+}
+
+.nagoyameshi-btn-delete {
+	background-color: #dc3545 !important;
+    transition: 0.1s;
+    color: white;
+}
+
+.nagoyameshi-btn-delete:hover {
+	opacity: 0.8;
+}
+
+.nagoyameshi-page-link {
+    color: #5196a6;
+}
+
+.nagoyameshi-page-link:hover {
+    color: #407784;
+}
+
+.nagoyameshi-active {
+    background-color: #5196a6 !important;
+    border-color: #5196a6 !important;
+}
+
+.nagoyameshi-pre-wrap {
+    /* 改行文字で折り返す */
+    white-space: pre-wrap;
+}
+
+.nagoyameshi-link-danger {
+    color: #f2594b;
+}
+
+.nagoyameshi-link-danger:hover {
+    color: #a63c3c;
+}
+
+.nagoyameshi-btn-danger {
+    background-color: #f2594b !important;
+    transition: 0.1s;
+}
+
+.nagoyameshi-btn-danger:hover {
+    opacity: 0.8;
+}
+
+.nagoyameshi-dropdown-item:active {
+    background-color: #5196a6;
+}
+
+.nagoyameshi-card-link {
+    transition: 0.3s;
+}
+
+.nagoyameshi-card-link:hover {
+    opacity: 0.8;
+}
+
+.nagoyameshi-horizontal-card-image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.nagoyameshi-sort-box {
+    width: 150px;
+}
+
+.nagoyameshi-vertical-card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.nagoyameshi-search-form {
+    max-width: 300px;
+}
+
+/* スターアイコンのスタイル */
+.star {
+    color: white;
+}
+
+.favorited .star {
+    color: rgb(255, 255, 0)!important; /* 登録済み時の色 */
+}
+
+/* ボタン内のテキストのスタイル */
+.text {
+    color: white;
+}
+
+.favorite-button-wrapper {
+    position: absolute;
+    top: 100px;
+    right: 200px;
+}
+
+.free-favorite-button-wrapper {
+    position: absolute;
+    top: 65px;
+    right: 185px;
+    width: auto;
+    text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    .free-favorite-button-wrapper {
+        top: 50px; /* 位置を少し下げる */
+        right: 10px; /* 画面端に寄せる */
+        left: 10px; /* 横幅を全体に広げる */
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .free-favorite-button-wrapper {
+        top: 40px;
+        right: 5px;
+        left: 5px;
+    }
+}
+
+/* お気に入り登録テキストのレスポンシブ対応 */
+.favorite-card-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: center;
+    margin: 0 auto;
+    word-wrap: break-word;
+}
+
+@media screen and (max-width: 768px) {
+    .favorite-card-text {
+        font-size: 0.9rem; /* 小さい画面で文字サイズを縮小 */
+        line-height: 1.4;  /* 行間も調整 */
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .favorite-card-text {
+        font-size: 0.8rem; /* さらに縮小 */
+        line-height: 1.3;
+    }
+}
+
+/* お気に入りボタン */
+.favoriteButton {
+    color: white; 
+    background: #ffa500;
+    width: auto;
+    height: 40px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.favoriteButton:hover {
+    background: #ff8c00; /* ホバー時の背景色 */
+}
+
+.favorite-container .favoriteButton {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-favorite-btn {
+	color: white;
+	background: #dc3545;
+}
+.remove-favorite-btn:hover {
+	color: white;
+	background: #dc3545;
+	filter: brightness(0.9);
+}
+
+.favorite-container .text-danger {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+/* オーバーレイのスタイル */
+.overlay {
+    display: none; /* 初期状態で非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* トーストのスタイル */
+.toast {
+    display: none; /* 初期状態で非表示 */
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.toast.show {
+    display: block; /* トーストを表示 */
+}
+
+.toast-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.toast-button:hover {
+    background-color: #0056b3;
+}
+
+.favorite-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.favorite-container .btn {
+    font-size: 1.2rem;
+}
+
+/* レビューぼかし */
+.blurred {
+    filter: blur(5px);
+    color: gray;
+    text-align: center;
+    margin: 10px 0;
+    text-align: left;
+}
+
+/* ★選択フォームを縮める */
+.rating-select {
+    width: 120px; /* ★5個分の幅 */
+    text-align: center;
+    color: #f5e30f; 
+    font-weight: bold; 
+    background-color: white;
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+}
+
+.yellow-stars option {
+    color: #f5e30f;
+    font-weight: bold; 
+}
+
+.custom-btn {
+    background-color: #ef990d; 
+    border-color: #ef990d;   
+    color: #fff;            
+}
+
+.custom-btn:hover {
+    background-color: #e07f0a;
+    border-color: #e07f0a;
+}
+
+.alert-success {
+	width: 200px;
+    background-color: #ef990d;
+    color: #ffffff;
+    border: none; 
+    text-align: center;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+/* 認証メール送信メッセージのスタイル */
+.alert-info-send-email {
+    background-color: #ffffff; /* 背景色を白に設定 */
+    border: 2px solid #ef990d; /* オレンジ色の枠線を追加 */
+    color: #ef990d; /* テキスト色をオレンジに */
+    font-size: 1rem; /* テキストサイズ */
+    font-weight: 500; /* 太字 */
+    text-align: center; /* テキスト中央揃え */
+    padding: 15px 20px; /* 内側余白を設定 */
+    margin: 10px auto; /* 他要素との間隔を確保 */
+    border-radius: 8px; /* 角を丸くする */
+    position: relative; /* 相対配置に変更して他要素と被らないようにする */
+    z-index: 1000; /* 他の要素よりも前面に表示 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加して視覚効果を向上 */
+}
+
+/* スマートフォン対応 */
+@media screen and (max-width: 576px) {
+    .alert-info-send-email {
+        font-size: 1rem; /* 小さい画面で文字サイズを縮小 */
+        padding: 8px 10px; /* 内側余白を調整 */
+        top: 15%; /* 位置を少し下げる */
+    }
+}
+
+/* ログイン/ログアウトメッセージのスタイル */
+.alert-info-auth {
+    background-color: #ffffff; /* 背景色を白に設定 */
+    border: 2px solid #ef990d; /* オレンジ色の枠線を追加 */
+    color: #ef990d; /* テキスト色をオレンジに */
+    font-size: 1rem; /* テキストサイズ */
+    font-weight: 500; /* 太字 */
+    text-align: center; /* テキスト中央揃え */
+    padding: 15px 20px; /* 内側余白を設定 */
+    margin: 10px auto; /* 他要素との間隔を確保 */
+    border-radius: 8px; /* 角を丸くする */
+    position: relative; /* 相対配置に変更して他要素と被らないようにする */
+    z-index: 1000; /* 他の要素よりも前面に表示 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加して視覚効果を向上 */
+    max-width: 200px; /* 最大幅を設定して中央揃え */
+}
+
+/* スマートフォン対応 */
+@media screen and (max-width: 576px) {
+    .alert-success-temporary-pass, .alert-info-auth {
+        font-size: 1rem; /* 小さい画面で文字サイズを縮小 */
+        padding: 8px 10px; /* 内側余白を調整 */
+        top: 5%; /* 位置を少し下げる */
+    }
+}
+
+/* 成功メッセージのスタイル */
+.alert-success-temporary-pass {
+    background-color: #ffffff; /* 背景色を白に設定 */
+    border: 2px solid #ef990d; /*枠線を追加 */
+    color: #ef990d;
+    font-size: 1rem; /* テキストサイズ */
+    font-weight: bold; /* 太字 */
+    text-align: center; /* テキスト中央揃え */
+    padding: 10px 15px; /* 内側余白 */
+    margin-bottom: 20px; /* 下部余白 */
+    border-radius: 5px; /* 角を丸くする */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
+    max-width: 250px; /* 最大幅を設定して中央揃え */
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 576px) {
+    .alert-success-temporary-pass {
+        font-size: 0.9rem; /* 小さい画面で文字サイズを調整 */
+        padding: 8px 10px; /* 内側余白を縮小 */
+    }
+}
+
+.alert-info, .no-border-message {
+    background-color: #ffffff; /* 背景色を白に設定 */
+    border: 2px solid #ef990d; /* オレンジ色の枠線を追加 */
+    color: #ef990d; /* テキスト色をオレンジに */
+    font-size: 1rem; /* テキストサイズ */
+    font-weight: 500; /* 太字 */
+    text-align: center; /* テキスト中央揃え */
+    padding: 15px 20px; /* 内側余白を設定 */
+    margin: 10px auto; /* 他要素との間隔を確保 */
+    border-radius: 8px; /* 角を丸くする */
+    position: relative; /* 相対配置に変更して他要素と被らないようにする */
+    z-index: 1000; /* 他の要素よりも前面に表示 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加して視覚効果を向上 */
+    max-width: 250px; /* 最大幅を設定して中央揃え */
+    word-wrap: break-word; /* 長い単語を折り返す */
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 576px) {
+    .alert-info {
+        font-size: 1.2rem; /* 小さい画面では文字サイズを調整 */
+        padding: 10px 15px; /* 内側余白を縮小 */
+    }
+}
+
+/* 成功メッセージのスタイル */
+.text-success {
+	background-color: #ffffff; /* 背景色を白に設定 */
+	border: 2px solid #ef990d; /* オレンジ色の枠線を追加 */
+    color: #ef990d !important;
+    font-size: 1rem; /* テキストサイズ */
+    font-weight: 500; /* 太字 */
+    text-align: center; /* テキスト中央揃え */
+    padding: 15px 20px; /* 内側余白を設定 */
+    margin: 10px auto; /* 他要素との間隔を確保 */
+    border-radius: 8px; /* 角を丸くする */
+    position: relative; /* 相対配置に変更して他要素と被らないようにする */
+    z-index: 1000; /* 他の要素よりも前面に表示 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加して視覚効果を向上 */
+    max-width: 300px; /* 最大幅を設定して中央揃え */
+    word-wrap: break-word; /* 長い単語を折り返す */
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 576px) {
+    .text-success {
+        font-size: 1.2rem; /* 小さい画面では文字サイズを調整 */
+        padding: 10px 15px; /* 内側余白を縮小 */
+    }
+}
+
+/* メッセージテキストを少し下に移動 */
+.success-message-text {
+    display: inline-block; 
+    margin: 2px 2px 2px 2px;
+    position: relative;
+}
+
+.rating-stars {
+    color: #f5e30f; 
+    font-size: 1.25rem;
+}
+
+/* 仮パス送信、パス再設定ボタン */
+.btn-primary {
+	background-color: #ef990d;
+	border-color: #ef990d;
+	--bs-btn-active-bg: #ef990d;
+}
+
+.btn-primary:hover {
+	background-color: #ef990d;
+	border-color: #ef990d;
+	opacity: 0.8;
+}
+
+.btn-primary:active {
+	 transform: scale(0.99);
+}
+
+
+
+.nagoyameshi-navbar-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    z-index: 1050; /* 他の要素の上に表示 */
+    background-color: white;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.nagoyameshi-navbar-left .nav-link {
+    font-size: 14px;
+    color: #000;
+    padding: 0.5rem 1rem;
+}
+
+.nagoyameshi-navbar-left .nav-link:hover {
+    color: #ef990d; /* ホバー時の色 */
+}
+
+/* ロゴ右側ドロップダウンメニュー */
+#navbarRightMenu {
+    font-size: 14px;
+    color: #000;
+}
+
+#navbarRightMenu:hover {
+    color: #ef990d; /* ホバー時の色 */
+}
+
+.navbar-nav .dropdown-menu {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.navbar-nav .dropdown-item {
+    font-size: 14px;
+    color: #000;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-nav .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #ef990d;
+}
+
+/* FAQテーブルのスタイル */
+.faq-table tbody tr:nth-child(odd) {
+    background-color: #ef990d; /* Qの背景色 */
+    color: rgb(255, 255, 255);
+}
+
+.faq-table tbody tr:nth-child(even) {
+    background-color: white; /* Aの背景色 */
+}
+
+.faq-table th {
+    width: 10%;
+    text-align: center;
+}
+
+/* スライドショー画像のサイズを調整 */
+#slideshow {
+    display: flex; /* Flexboxを有効化 */
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center; /* 縦方向の中央揃え（必要に応じて） */
+    height: 100%; /* 必要に応じてスライドショー全体の高さを指定 */
+}
+
+#slideshow img {
+    max-width: 100%;
+    height: auto;   
+    max-height: 400px; 
+    object-fit: contain;
+}
+
+@media screen and (min-width: 1400px) {
+    .nagoyameshi-container {
+        max-width: 1200px;
+    }
+}

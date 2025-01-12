@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>レビュー投稿</title>
+    
+    <!-- フラグメントのmeta情報とスタイルを読み込む -->
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+</head>
+
+<body>
+    <!-- ヘッダーのフラグメント -->
+    <div th:replace="~{fragment :: header}"></div>
+
+    <!-- コンテンツ部分 -->
+    <main class="container mt-4">
+        <h1 class="mb-4">レビュー投稿フォーム</h1>
+
+        <!-- 成功メッセージの表示 -->
+        <div th:if="${successMessage}" class="alert alert-success custom-alert">
+            <span th:text="${successMessage}"></span>
+        </div>
+
+        <!-- フォーム -->
+        <form th:action="@{/stores/{storeId}/reviews(storeId=${store.storeId})}" th:object="${reviewForm}" method="post">
+            <!-- CSRFトークン -->
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+
+            <!-- バリデーションエラーの表示 -->
+            <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+                <ul>
+                    <li th:each="error : ${#fields.errors('')}" th:text="${error.defaultMessage}"></li>
+                </ul>
+            </div>
+
+            <!-- 評価 -->
+            <div class="mb-3">
+                <label for="rating" class="form-label">評価:</label>
+                <select id="rating" name="rating" class="form-select rating-select yellow-stars" th:field="*{rating}" required>
+                    <option value="5" th:selected="*{rating == 5}">★★★★★</option>
+                    <option value="4" th:selected="*{rating == 4}">★★★★☆</option>
+                    <option value="3" th:selected="*{rating == 3}">★★★☆☆</option>
+                    <option value="2" th:selected="*{rating == 2}">★★☆☆☆</option>
+                    <option value="1" th:selected="*{rating == 1}">★☆☆☆☆</option>
+                </select>
+            </div>
+
+            <!-- コメント -->
+            <div class="mb-3">
+                <label for="comment" class="form-label">コメント</label>
+                <textarea id="comment" name="comment" class="form-control" th:field="*{comment}" rows="4" required></textarea>
+            </div>
+
+            <!-- ボタン -->
+            <div>
+                <button type="submit" class="btn custom-btn">投稿する</button>
+                <a class="btn custom-btn ms-2" th:href="@{/stores/{storeId}(storeId=${store.storeId})}">店舗詳細に戻る</a>
+            </div>
+        </form>
+    </main>
+
+    <!-- フッターのフラグメント -->
+    <div th:replace="~{fragment :: footer}"></div>
+
+    <!-- スクリプト -->
+    <div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>

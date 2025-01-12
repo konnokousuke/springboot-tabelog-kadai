@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>NAGOYAMESHIとは</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <div th:replace="~{fragment :: header}"></div>
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+                <h1 class="text-center"><img class="nagoyameshi-logo me-1" th:src="@{/images/logo.png}" alt="NAGOYAMESHI">とは</h1>
+                <p> 名古屋といえば「味噌カツ」「ひつまぶし」「手羽先」など、ユニークで多彩なグルメが楽しめる街として知られています。<br>
+                当サイトでは、そんな名古屋の魅力的な料理と文化を深く掘り下げてご紹介します。地元で愛される老舗の味から、話題の新店舗まで、幅広い情報を網羅し、訪れる方にとって最高の名古屋グルメ体験を提供します。<br>
+                また、各店舗の詳細情報やレビュー、アクセスマップなども掲載しており、初めて名古屋を訪れる方でも安心してグルメツアーを楽しめる内容となっています。<br>
+                さらに、名古屋の食文化を支える歴史や背景、地元ならではのおすすめの食べ方など、知ればもっと楽しめる情報も満載です。ぜひ、このページを通じて名古屋グルメの奥深さを存分にお楽しみください。</p>
+                <div id="slideshow" class="text-center">
+                    <img th:each="imagePath : ${imagePaths}" th:src="@{${imagePath}}" alt="ランダム画像" class="img-fluid mb-2" style="display:none;">
+                </div>
+            </div>
+        </main>
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+    <div th:replace="~{fragment :: scripts}"></div>
+    <script>
+        let index = 0;
+        const images = document.querySelectorAll('#slideshow img');
+        images[0].style.display = 'block'; // 最初の画像を表示
+        setInterval(() => {
+            images.forEach(img => img.style.display = 'none');
+            images[index].style.display = 'block';
+            index = (index + 1) % images.length;
+        }, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>よくある質問</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <div th:replace="~{fragment :: header}"></div>
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+                <h1 class="text-center mb-4">よくある質問</h1>
+
+                <!-- 中項目1: サービスについて -->
+                <h2 class="mb-3">サービスについて</h2>
+                <table class="table table-bordered faq-table">
+                    <tbody>
+                        <tr>
+                            <th>Q</th>
+                            <td>NAGOYAMESHIとは何ですか？</td>
+                        </tr>
+                        <tr>
+                            <th>A</th>
+                            <td>名古屋を代表する料理を紹介するサービスです。</td>
+                        </tr>
+                        <tr>
+                            <th>Q</th>
+                            <td>無料会員と有料会員で利用できる機能の違いを教えてください。</td>
+                        </tr>
+                        <tr>
+                            <th>A</th>
+                            <td>【無料会員が利用できる機能】<br>
+                            レビューの閲覧、店舗検索、店舗並べ替え機能が利用できます。<br>
+                            【有料会員が利用できる機能】<br>
+                            無料会員の機能に加えて、お気に入り登録、レビュー投稿、店舗の予約が可能です。
+                            </td>
+                        </tr>
+                        <tr>
+							<th>Q</th>
+							<td>有料会員のサービス料はいくらですか？</td>
+						</tr>
+						<tr>
+							<th>A</th>
+							<td>月額330円(税込)です。</td>
+						</tr>
+                    </tbody>
+                </table>
+
+                <!-- 中項目2: 会員登録について -->
+                <h2 class="mb-3">会員登録について</h2>
+                <table class="table table-bordered faq-table">
+                    <tbody>
+                        <tr>
+                            <th>Q</th>
+                            <td>無料会員登録の方法を教えてください。</td>
+                        </tr>
+                        <tr>
+                            <th>A</th>
+                            <td>ページ右上のドロップダウンメニュー＞「無料会員登録」からご登録ください。</td>
+                        </tr>
+                        <tr>
+                            <th>Q</th>
+                            <td>有料会員登録の方法を教えてください。</td>
+                        </tr>
+                        <tr>
+                            <th>A</th>
+                            <td>無料会員アカウントでログイン後、ページ右上のドロップダウンメニュー＞「有料会員登録」からご登録ください。<br>
+                            ※有料会員登録にはクレジットカードが必要です。</td>
+                        </tr>
+                        <tr>
+							<th>Q</th>
+							<td>有料会員から無料会員へ変更する方法を教えてください </td>
+						</tr>
+						<tr>
+							<th>A</th>
+							<td>有料会員アカウントでログイン後、ページ右上のドロップダウンメニュー＞「会員情報」＞「編集」＞「無料会員へダウングレードする」から変更可能です。</td>
+						</tr>
+                    </tbody>
+                </table>
+
+                <!-- 中項目3: その他 -->
+                <h2 class="mb-3">解約について</h2>
+                <table class="table table-bordered faq-table">
+                    <tbody>
+                        <tr>
+                            <th>Q</th>
+                            <td>無料会員を解約する方法を教えてください。</td>
+                        </tr>
+                        <tr>
+                            <th>A</th>
+                            <td>無料会員アカウントでログイン後、ページ右上のドロップダウンメニュー＞「会員情報」＞「編集」＞「解約する」から解約可能です。<br>
+                            ※有料会員の方は無料会員へダウングレード後に解約手続きをお願いします。</td>
+                        </tr>
+                        <tr>
+                            <th>Q</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>A</th>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </main>
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+    <div th:replace="~{fragment :: scripts}"></div>
+</body>
+</html>

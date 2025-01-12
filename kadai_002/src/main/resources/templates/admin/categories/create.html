@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>カテゴリ追加</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <!-- ヘッダー -->
+        <div th:replace="~{fragment :: header}"></div>
+        
+        <main>
+            <div class="container nagoyameshi-container pb-5">
+                <div class="row justify-content-center">
+                    <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">                        
+                            <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin/categories}">カテゴリ一覧</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">カテゴリ追加</li>
+                        </ol>
+                    </nav>  
+
+                    <div class="col-md-6">
+                        <form method="post" th:action="@{/admin/categories/create}">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">カテゴリ名</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">追加する</button>
+                        </form>
+                    </div>
+                </div>
+            </div>  
+        </main>
+        
+        <!-- フッター -->
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>    
+    
+    <div th:replace="~{fragment :: scripts}"></div>  
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>会員情報編集</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <!-- ヘッダー -->
+        <div th:replace="~{fragment :: header}"></div>
+
+        <main>
+            <div class="container pb-5 nagoyameshi-container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-5 col-lg-6 col-md-8">
+                        <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                                <li class="breadcrumb-item"><a th:href="@{/member}">会員情報</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">会員情報編集</li>
+                            </ol>
+                        </nav>
+
+                        <!-- タイトル -->
+                        <h1 class="mb-4 text-center">会員情報編集</h1>
+
+                        <!-- 編集フォーム -->
+                        <form method="post" th:action="@{/member/update}" th:object="${memberEditForm}">
+                            <!-- IDフィールド（非表示） -->
+                            <input type="hidden" th:field="*{id}">
+
+                            <!-- 氏名 -->
+                            <div class="form-group row mb-3">
+                                <label for="name" class="col-md-5 col-form-label text-md-left fw-bold">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-1">氏名</span>
+                                        <span class="badge bg-danger">必須</span>
+                                    </div>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="侍 太郎">
+                                    <p class="text-danger small" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                                </div>
+                            </div>
+
+                            <!-- フリガナ -->
+                            <div class="form-group row mb-3">
+                                <label for="furigana" class="col-md-5 col-form-label text-md-left fw-bold">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-1">フリガナ</span>
+                                        <span class="badge bg-danger">必須</span>
+                                    </div>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" id="furigana" class="form-control" th:field="*{furigana}" placeholder="サムライ タロウ">
+                                    <p class="text-danger small" th:if="${#fields.hasErrors('furigana')}" th:errors="*{furigana}"></p>
+                                </div>
+                            </div>
+
+                            <!-- 郵便番号 -->
+                            <div class="form-group row mb-3">
+                                <label for="postalCode" class="col-md-5 col-form-label text-md-left fw-bold">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-1">郵便番号</span>
+                                        <span class="badge bg-danger">必須</span>
+                                    </div>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" id="postalCode" class="form-control" th:field="*{postalCode}" placeholder="123-4567">
+                                    <p class="text-danger small" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></p>
+                                </div>
+                            </div>
+
+                            <!-- 住所 -->
+                            <div class="form-group row mb-3">
+                                <label for="address" class="col-md-5 col-form-label text-md-left fw-bold">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-1">住所</span>
+                                        <span class="badge bg-danger">必須</span>
+                                    </div>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" id="address" class="form-control" th:field="*{address}" placeholder="名古屋市中区栄1-2-3">
+                                    <p class="text-danger small" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+                                </div>
+                            </div>
+
+                            <!-- 電話番号 -->
+                            <div class="form-group row mb-3">
+                                <label for="phoneNumber" class="col-md-5 col-form-label text-md-left fw-bold">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-1">電話番号</span>
+                                        <span class="badge bg-danger">必須</span>
+                                    </div>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" id="phoneNumber" class="form-control" th:field="*{phoneNumber}" placeholder="090-1234-5678">
+                                    <p class="text-danger small" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
+                                </div>
+                            </div>          
+
+                            <!-- クレジットカード -->
+                            <div class="form-group row mb-3">
+                                <label for="creditCard" class="col-md-5 col-form-label text-md-left fw-bold">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-1">クレジットカード</span>
+                                        <span class="badge bg-danger">必須</span>
+                                    </div>
+                                </label>
+                                <div class="col-md-7">
+                                    <span th:if="${memberEditForm.status == 'PAID'}">
+                                        <a href="#" id="creditCardChangeLink" class="btn btn-link">変更する</a>
+                                    </span>
+                                    <span th:if="${memberEditForm.status != 'PAID'}">未登録</span>
+                                </div>
+                            </div>
+
+                            <!-- ステータス表示 -->
+                            <div class="text-center mt-4">
+                                <p>現在のステータス: 
+                                    <span th:text="${memberEditForm.status == 'PAID' ? '有料会員' : '無料会員'}"></span>
+                                </p>
+                            </div>
+
+                            <!-- 更新ボタン -->
+                            <div class="form-group d-flex justify-content-center my-4">
+                                <button type="submit" class="btn btn-primary text-white shadow-sm w-50">更新</button>
+                            </div>
+                        </form>
+
+                        <!-- ダウングレードボタン -->
+                        <div th:if="${memberEditForm.status == 'PAID'}" class="text-center mt-4">
+                            <form id="downgradeForm" th:action="@{/member/downgrade/confirm}" method="post">
+                                <button type="button" class="btn btn-danger" id="downgradeButton">無料会員へダウングレードする</button>
+                            </form>
+                        </div>
+                        
+                        <!-- 無料会員の場合のみ解約ボタンを表示 -->
+                        <div th:if="${memberEditForm.status == 'FREE'}">
+							<form method="post" th:action="@{/member/delete}" onsubmit="return confirm('会員情報を削除し退会処理を行います。よろしいですか？')">
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+								<div class="form-group d-flex justify-content-center my-4">
+									 <button type="submit" class="btn btn-danger text-white shadow-sm w-50">解約する</button>
+								</div>
+							</form>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- フッター -->
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+
+    <div class="overlay" id="pageOverlay"></div> <!-- オーバーレイ -->
+
+<!-- トースト要素 -->
+<div id="toast" class="toast">
+   <div class="toast-content">有料会員から無料会員への手続きが完了しました。ログインをし直してください。</div>
+   <button class="toast-button" id="toastOkButton">OK</button>
+</div>
+
+<script>
+    // 共通関数: CSRFトークンを取得
+    function getCsrfToken() {
+        return document.querySelector('meta[name="_csrf"]')?.getAttribute("content");
+    }
+
+    // ダウングレードボタンの動作
+    document.getElementById('downgradeButton').addEventListener('click', function () {
+        if (confirm("クレジットカード情報を削除し無料会員へダウングレードします。よろしいですか？")) {
+            const csrfToken = getCsrfToken();
+            if (!csrfToken) {
+                console.error("CSRFトークンが見つかりません。");
+                return;
+            }
+
+            fetch("/member/downgrade/confirm", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('pageOverlay').style.display = 'block';
+                    document.getElementById('toast').classList.add('show');
+                } else {
+                    console.error("ダウングレード処理に失敗しました。");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    });
+
+    // トーストの「OK」ボタン処理
+    document.getElementById('toastOkButton').addEventListener('click', function () {
+        const csrfToken = getCsrfToken();
+        if (!csrfToken) {
+            console.error("CSRFトークンが見つかりません。");
+            return;
+        }
+
+        fetch("/logout", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/";
+            } else {
+                console.error("ログアウト処理に失敗しました。");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+
+    // 「変更する」リンクの動作
+    document.getElementById('creditCardChangeLink')?.addEventListener('click', function (e) {
+        e.preventDefault();
+        const csrfToken = getCsrfToken();
+        if (!csrfToken) {
+            console.error("CSRFトークンが見つかりません。");
+            return;
+        }
+
+        sessionStorage.setItem('toastMessage', 'クレジットカード情報を変更しました。ログインをし直してください。');
+        sessionStorage.setItem('overlayActive', 'true');
+
+        fetch('/stripe/card/update-url', {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => response.ok ? response.json() : Promise.reject('Stripeリンクの取得に失敗しました。'))
+        .then(data => {
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                throw new Error('URLが取得できませんでした。');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // ページ読み込み時にトーストとオーバーレイを表示
+    document.addEventListener('DOMContentLoaded', function () {
+        const message = sessionStorage.getItem('toastMessage');
+        const overlayActive = sessionStorage.getItem('overlayActive');
+
+        if (message && overlayActive === 'true') {
+            showToast(message);
+            document.getElementById('pageOverlay').style.display = 'block';
+            sessionStorage.removeItem('toastMessage');
+            sessionStorage.removeItem('overlayActive');
+        }
+    });
+
+    // トースト表示関数
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastContent = toast.querySelector('.toast-content');
+        if (toast && toastContent) {
+            toastContent.textContent = message;
+            toast.classList.add('show');
+        } else {
+            console.error("トースト要素が見つかりません。");
+        }
+    }
+</script>
+
+    <div th:replace="~{fragment :: scripts}"></div>
+</body>
+</html>

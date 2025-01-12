@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <!-- Meta情報とスタイルをフラグメントから読み込み -->
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <title>レビュー投稿一覧</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <!-- ヘッダー -->
+        <div th:replace="~{fragment :: header}"></div>
+
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-9 col-xl-10 col-lg-11">
+                        <h1 class="mb-4 text-center">レビュー投稿一覧</h1>
+                        <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">レビュー投稿一覧</li>
+                            </ol>
+                        </nav>
+
+                        <!-- レビューがない場合のメッセージ -->
+                        <div th:if="${reviews.empty}">
+                            <p>レビュー投稿がありません。</p>
+                        </div>
+
+                        <!-- レビューリスト -->
+                        <div th:unless="${reviews.empty}">
+                            <div class="list-group">
+                                <div th:each="review : ${reviews.content}" class="list-group-item">
+                                    <!-- 店舗名とリンク -->
+                                    <a th:href="@{/stores/{id}(id=${review.store.storeId})}">
+                                        <h5 th:text="${review.store.storeName}"></h5>
+                                    </a>
+                                    <!-- 評価とコメント -->
+                                    <p>
+                                        <strong>評価:</strong>
+                                        <span class="rating-stars">
+                                            <span th:each="i : ${#numbers.sequence(1, review.rating)}">★</span>
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <strong>コメント:</strong>
+                                        <span th:text="${review.comment}"></span>
+                                    </p>
+                                    <!-- 投稿日時 -->
+                                    <p class="text-muted" th:text="${#dates.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+                                    
+                                    <!-- 編集ボタン -->
+                                    <a th:href="@{/stores/{storeId}/reviews/post/{reviewId}(storeId=${review.store.storeId}, reviewId=${review.reviewId})}" class="btn btn-primary btn-sm">編集</a>
+                                    
+                                    <!-- 削除ボタン -->
+                                    <button class="btn btn-danger btn-sm" th:onclick="'confirmDelete(' + ${review.reviewId} + ')'">削除</button>
+                                </div>
+                            </div>
+
+                            <!-- ページネーション -->
+                            <nav th:if="${reviews.totalPages > 1}" aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <!-- 前のページ -->
+                                    <li class="page-item" th:classappend="${reviews.first ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/reviews/history(page=${reviews.number - 1})}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <!-- 各ページ番号 -->
+                                    <li class="page-item" th:each="page : ${#numbers.sequence(0, reviews.totalPages - 1)}"
+                                        th:classappend="${page == reviews.number ? 'active' : ''}">
+                                        <a class="page-link" th:href="@{/reviews/history(page=${page})}" th:text="${page + 1}"></a>
+                                    </li>
+                                    <!-- 次のページ -->
+                                    <li class="page-item" th:classappend="${reviews.last ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/reviews/history(page=${reviews.number + 1})}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- フッター -->
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+
+    <!-- スクリプト -->
+    <div th:replace="~{fragment :: scripts}"></div>
+    
+    <script>
+function confirmDelete(reviewId) {
+    if (confirm("レビューを削除しますか？")) {
+        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+        fetch(`/reviews/delete/${reviewId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("レビューを削除しました。");
+                location.reload();
+            } else {
+                alert("削除に失敗しました。");
+            }
+        })
+        .catch(error => {
+            console.error("削除エラー:", error);
+            alert("エラーが発生しました。");
+        });
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>会員規約</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <div th:replace="~{fragment :: header}"></div>
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+                <h1 class="text-center mb-4">会員規約</h1>
+                
+                <section>
+                    <h2>第1条（適用）</h2>
+                    <p>本規約は、NAGOYAMESHI（以下、「当サービス」といいます）を利用する全ての会員に適用されます。</p>
+                </section>
+
+                <section>
+                    <h2>第2条（定義）</h2>
+                    <p>本規約において使用する用語の定義は以下の通りとします。</p>
+                    <ul>
+                        <li>「会員」とは、本規約を承諾のうえ、当サービスの利用登録を行った個人または法人を指します。</li>
+                        <li>「サービス」とは、当サービスが提供する情報提供および関連する各種機能を指します。</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>第3条（会員登録）</h2>
+                    <p>会員登録を希望する者は、当サービスが定める手続きに従い、登録申請を行うものとします。</p>
+                </section>
+
+                <section>
+                    <h2>第4条（禁止事項）</h2>
+                    <p>会員は、以下の行為を行ってはなりません。</p>
+                    <ul>
+                        <li>法令または公序良俗に違反する行為</li>
+                        <li>虚偽の情報を登録する行為</li>
+                        <li>他の会員または第三者の権利を侵害する行為</li>
+                        <li>その他、当サービスが不適切と判断する行為</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>第5条（免責事項）</h2>
+                    <p>当サービスは、会員が本サービスを利用することにより被った損害について一切の責任を負いません。</p>
+                </section>
+
+                <section>
+                    <h2>第6条（規約の変更）</h2>
+                    <p>当サービスは、必要と判断した場合、本規約を変更することができます。</p>
+                </section>
+
+                <section>
+                    <h2>第7条（準拠法および管轄）</h2>
+                    <p>本規約は日本法に準拠し、当サービスに関する一切の紛争は、名古屋地方裁判所を第一審の専属的合意管轄裁判所とします。</p>
+                </section>
+
+            </div>
+        </main>
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+    <div th:replace="~{fragment :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>会社概要</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <div th:replace="~{fragment :: header}"></div>
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+                <h1 class="text-center mb-4">会社概要</h1>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>会社名</th>
+                            <td>株式会社NAGOYAMESHI</td>
+                        </tr>
+                        <tr>
+                            <th>設立</th>
+                            <td>2000年1月1日</td>
+                        </tr>
+                        <tr>
+                            <th>所在地</th>
+                            <td>名古屋市中区〇〇1-2-3</td>
+                        </tr>
+                        <tr>
+                            <th>代表取締役</th>
+                            <td>山田 太郎</td>
+                        </tr>
+                        <tr>
+                            <th>資本金</th>
+                            <td>1,000万円</td>
+                        </tr>
+                        <tr>
+                            <th>従業員数</th>
+                            <td>50名</td>
+                        </tr>
+                        <tr>
+                            <th>事業内容</th>
+                            <td>飲食店情報の提供および関連サービスの運営</td>
+                        </tr>
+                        <tr>
+                            <th>主要取引先</th>
+                            <td>各地の飲食店および広告代理店</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+    <div th:replace="~{fragment :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>カテゴリ一覧</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <!-- ヘッダー -->
+        <div th:replace="~{fragment :: header}"></div>
+        
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+                <div class="row justify-content-center">
+					<div class="col-xxl-9 col-xl-10 col-lg-11">
+						
+						<h1 class="mb-4 text-center">カテゴリ一覧</h1>
+						
+                    <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">                        
+                            <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">カテゴリ一覧</li>
+                        </ol>
+                    </nav>         
+
+                    <div class="col-xl-3 col-lg-4 col-md-12">               
+                        <form method="get" th:action="@{/admin/categories}" class="w-100 mb-3">
+                           <div class="input-group">
+                               <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="カテゴリ名で検索">
+                               <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
+                           </div>               
+                        </form>
+                    </div>
+
+                    <div class="col">
+                        <!-- エラーメッセージ -->
+                        <p th:if="${errorMessage}" class="text-danger fs-5" th:text="${errorMessage}" style="text-align: center;"></p>
+                        
+                        <!-- 成功メッセージ -->
+                        <p th:if="${successMessage}" class="text-success fs-5" th:text="${successMessage}" style="text-align: center;"></p>
+                        
+                        <!-- 「カテゴリを追加」ボタン -->
+                        <div class="mb-3 text-end">
+							<a th:href="@{/admin/categories/create}" class="btn text-white shadow-sm nagoyameshi-btn">カテゴリを追加</a>
+						</div>
+                        
+                        <!-- カテゴリ一覧 -->
+<div class="d-flex justify-content-center">
+    <table class="table table-borderless" style="max-width: 800px; margin: auto;">
+        <thead style="border-bottom: 1px solid #dee2e6;">
+            <tr>
+                <th style="position: relative; left: 100px;">ID</th>
+                <th style="position: relative; left: 300px;">カテゴリ名</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="category : ${categoryPage.content}" style="border-bottom: 1px solid #dee2e6;">
+                <td style="position: relative; left: 100px;" th:text="${category.categoryId}"></td>
+                <td class="text-center">
+                    <form method="post" th:action="@{/admin/categories/update}" class="d-inline">
+                        <input type="hidden" name="id" th:value="${category.categoryId}">
+                        <input type="text" name="name" class="form-control d-inline" style="width: 50%;" th:value="${category.name}">
+                        <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">更新</button>
+                    </form>
+                    <form method="post" th:action="@{/admin/categories/delete}" class="d-inline" style="position: relative; left: 50px;">
+                        <input type="hidden" name="id" th:value="${category.categoryId}">
+                        <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn-delete">削除</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+                        <!-- ページネーション -->
+                        <div th:if="${categoryPage != null and !categoryPage.empty and categoryPage.totalPages > 1}" class="d-flex justify-content-center mt-3">
+                            <nav aria-label="カテゴリ一覧ページ">
+                                <ul class="pagination">
+                                    <!-- 「前へ」のリンク -->
+                                    <li class="page-item">
+                                        <span th:if="${categoryPage.first}" class="page-link disabled">前</span>
+                                        <a th:unless="${categoryPage.first}" th:href="@{/admin/categories(page=${categoryPage.number}, keyword=${keyword})}" class="page-link">前</a>
+                                    </li>
+
+                                    <!-- ページ番号のリンク -->
+                                    <li th:each="i : ${#numbers.sequence(0, categoryPage.totalPages - 1)}" class="page-item">
+                                        <a th:if="${i != categoryPage.number}" th:href="@{/admin/categories(page=${i + 1}, keyword=${keyword})}" class="page-link" th:text="${i + 1}"></a>
+                                        <span th:if="${i == categoryPage.number}" class="page-link active" th:text="${i + 1}"></span>
+                                    </li>
+
+                                    <!-- 「次へ」のリンク -->
+                                    <li class="page-item">
+                                        <span th:if="${categoryPage.last}" class="page-link disabled">次</span>
+                                        <a th:unless="${categoryPage.last}" th:href="@{/admin/categories(page=${categoryPage.number + 2}, keyword=${keyword})}" class="page-link">次</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                   </div>
+                </div>
+            </div>  
+        </main>
+        
+        <!-- フッター -->
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>    
+    
+    <div th:replace="~{fragment :: scripts}"></div>  
+</body>
+</html>
