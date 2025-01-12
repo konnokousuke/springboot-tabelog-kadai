@@ -151,35 +151,31 @@ footer {
     color: white;
 }
 
-.favorite-button-wrapper {
-    position: absolute;
-    top: 100px;
-    right: 200px;
-}
-
+/* 画面幅によって適切に位置調整するためのスタイル */
+.favorite-button-wrapper,
 .free-favorite-button-wrapper {
-    position: absolute;
-    top: 65px;
-    right: 185px;
-    width: auto;
-    text-align: center;
+    position: relative; /* 絶対位置から相対位置に変更 */
+    top: 0; /* 上部からの位置をリセット */
+    margin-top: 20px; /* ボタンと店舗名の間に余白を追加 */
+    text-align: center; /* ボタンを中央揃え */
 }
 
+/* 画面幅768px以下の場合の調整 */
 @media screen and (max-width: 768px) {
+    .favorite-button-wrapper,
     .free-favorite-button-wrapper {
-        top: 50px; /* 位置を少し下げる */
-        right: 10px; /* 画面端に寄せる */
-        left: 10px; /* 横幅を全体に広げる */
+        margin-top: 15px; /* モバイルではさらに余白を調整 */
     }
 }
 
+/* 画面幅576px以下の場合の調整 */
 @media screen and (max-width: 576px) {
+    .favorite-button-wrapper,
     .free-favorite-button-wrapper {
-        top: 40px;
-        right: 5px;
-        left: 5px;
+        margin-top: 10px; /* 小さい画面ではさらに余白を縮小 */
     }
 }
+
 
 /* お気に入り登録テキストのレスポンシブ対応 */
 .favorite-card-text {
@@ -208,12 +204,11 @@ footer {
 .favoriteButton {
     color: white; 
     background: #ffa500;
-    width: auto;
-    height: 40px;
-    text-align: center;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    width: 80%; /* ボタン幅を狭める */
+    max-width: 200px; /* 最大幅を設定 */
+    min-width: 200px; /* 最小幅を設定 */
+    margin: 0 0 0 auto; /* 右揃えにする */
+    display: block; /* ブロック要素として扱う */
     transition: background 0.3s;
 }
 
@@ -221,7 +216,38 @@ footer {
     background: #ff8c00; /* ホバー時の背景色 */
 }
 
-.favorite-container .favoriteButton {
+/* 有料会員ログインメッセージのカード幅を調整 */
+.free-favorite-button-wrapper .card {
+    max-width: 300px; /* カードの最大幅を設定 */
+    margin: 0 auto; /* 中央揃え */
+    text-align: center; /* テキストを中央揃え */
+}
+
+/* メッセージテキストの調整 */
+.favorite-card-text {
+    font-size: 0.9rem; /* テキストサイズを少し小さく */
+    line-height: 1.5; /* 行間を調整 */
+    word-wrap: break-word; /* 長い単語を折り返す */
+    margin: 0 auto; /* 中央揃え */
+    max-width: 250px; /* テキストの最大幅を指定 */
+}
+
+/* 画面幅576px以下の場合の調整 */
+@media screen and (max-width: 576px) {
+    .free-favorite-button-wrapper .card {
+        max-width: 100%; /* 小さい画面では幅を広げる */
+        padding: 10px; /* 内側余白を調整 */
+    }
+
+    .favorite-card-text {
+        font-size: 0.8rem; /* 小さい画面ではさらに文字サイズを縮小 */
+        max-width: 100%; /* 幅を画面幅に合わせる */
+    }
+}
+
+
+
+.favorite-container {
     font-size: 1.2rem;
     padding: 0.5rem 1rem;
     display: inline-flex;
