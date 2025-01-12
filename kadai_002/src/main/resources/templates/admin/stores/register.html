@@ -130,13 +130,14 @@
     <div class="col-md-8">
         <div th:if="${#fields.hasErrors('dayOff')}" class="text-danger small mb-2" th:errors="*{dayOff}"></div>
         <select class="form-control" th:field="*{dayOff}">
-            <option value="日" th:text="'日'"></option>
-            <option value="月" th:text="'月'"></option>
-            <option value="火" th:text="'火'"></option>
-            <option value="水" th:text="'水'"></option>
-            <option value="木" th:text="'木'"></option>
-            <option value="金" th:text="'金'"></option>
-            <option value="土" th:text="'土'"></option>
+            <option value="日">日</option>
+            <option value="月">月</option>
+            <option value="火">火</option>
+            <option value="水">水</option>
+            <option value="木">木</option>
+            <option value="金">金</option>
+            <option value="土">土</option>
+            <option value="なし">なし</option> <!-- 追加 -->
         </select>
     </div>
 </div>

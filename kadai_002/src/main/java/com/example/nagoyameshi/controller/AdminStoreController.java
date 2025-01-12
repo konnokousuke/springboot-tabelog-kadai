@@ -144,7 +144,7 @@ public class AdminStoreController {
 	        StoreEditForm storeEditForm = new StoreEditForm(
 	            store.getStoreId(),
 	            store.getStoreName(),
-	            null, // 画像フィールドはnullのまま
+	            null, // 新しい画像はここではセットしない
 	            store.getDescription(),
 	            Long.valueOf(store.getPrice()),
 	            store.getPostalCode(),
@@ -157,8 +157,9 @@ public class AdminStoreController {
 	        );
 
 	        model.addAttribute("storeEditForm", storeEditForm);
-	        model.addAttribute("categories", categoryRepository.findAll()); // カテゴリデータを渡す
-	        model.addAttribute("daysOfWeek", List.of("日", "月", "火", "水", "木", "金", "土")); // 日本語曜日を渡す
+	        model.addAttribute("categories", categoryRepository.findAll());
+	        model.addAttribute("daysOfWeek", List.of("日", "月", "火", "水", "木", "金", "土", "なし"));
+	        model.addAttribute("existingImage", store.getImageFilename()); // 画像情報を追加
 
 	        return "admin/stores/edit";
 	    } catch (Exception e) {
@@ -177,7 +178,7 @@ public class AdminStoreController {
 	    if (bindingResult.hasErrors()) {
 	        // エラー時にカテゴリと曜日データを再度セット
 	        model.addAttribute("categories", categoryRepository.findAll());
-	        model.addAttribute("daysOfWeek", List.of("日", "月", "火", "水", "木", "金", "土")); // 日本語曜日を渡す
+	        model.addAttribute("daysOfWeek", List.of("日", "月", "火", "水", "木", "金", "土", "なし")); // 日本語曜日を渡す
 	        return "admin/stores/edit";
 	    }
 
@@ -190,7 +191,7 @@ public class AdminStoreController {
 	        // 更新処理中にエラーが発生した場合
 	        model.addAttribute("errorMessage", "更新処理中にエラーが発生しました: " + e.getMessage());
 	        model.addAttribute("categories", categoryRepository.findAll());
-	        model.addAttribute("daysOfWeek", List.of("日", "月", "火", "水", "木", "金", "土"));
+	        model.addAttribute("daysOfWeek", List.of("日", "月", "火", "水", "木", "金", "土", "なし"));
 	        return "admin/stores/edit";
 	    }
 	}

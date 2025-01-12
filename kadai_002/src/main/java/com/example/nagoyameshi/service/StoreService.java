@@ -107,9 +107,14 @@ public class StoreService {
 	    store.setCategories(Set.of(category)); // 単一カテゴリを設定
 
 	    // 定休日の設定
-	    String closedDays = String.join(",", storeRegisterForm.getDayOff());
-	    store.setClosedDays(closedDays);
-
+	    List<String> dayOffList = storeRegisterForm.getDayOff();
+	    if (dayOffList.contains("なし")) {
+	        store.setClosedDays("なし"); // 「なし」を保存
+	    } else {
+	        String closedDays = String.join(",", dayOffList);
+	        store.setClosedDays(closedDays);
+	    }
+	    
 	    // 店舗データを保存
 	    storeRepository.save(store);
 	    storeRepository.flush(); // Hibernateのキャッシュをクリア
@@ -158,6 +163,9 @@ public class StoreService {
 	        } catch (IOException e) {
 	            throw new RuntimeException("画像の保存中にエラーが発生しました: " + e.getMessage(), e);
 	        }
+	    } else {
+	        // 画像未選択の場合、既存の画像を保持
+	        System.out.println("DEBUG: 画像未選択のため既存の画像を保持します: " + store.getImageFilename());
 	    }
 
 	    // 基本情報の更新
@@ -189,14 +197,15 @@ public class StoreService {
 	        }
 	    }
 
-	    // 定休日の更新
-	    if (storeEditForm.getDayOff() != null && !storeEditForm.getDayOff().isEmpty()) {
-	        String closedDays = String.join(",", storeEditForm.getDayOff());
-	        store.setClosedDays(closedDays);
+	 // 定休日の更新
+	    List<String> dayOffList = storeEditForm.getDayOff();
+	    if (dayOffList.contains("なし")) {
+	        store.setClosedDays("なし"); //「なし」を保存
 	    } else {
-	        store.setClosedDays("");
+	        String closedDays = String.join(",", dayOffList);
+	        store.setClosedDays(closedDays);
 	    }
-
+	    
 	    // 最終保存
 	    storeRepository.save(store);
 	    storeRepository.flush(); // Hibernate キャッシュのクリア

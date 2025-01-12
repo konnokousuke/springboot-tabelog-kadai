@@ -10,8 +10,6 @@ import java.util.stream.Stream;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.nagoyameshi.validation.NotEmptyFile;
-
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +26,6 @@ public class StoreEditForm {
     @NotBlank(message = "店舗名を入力してください。")
     private String name;
     
-    @NotEmptyFile(message = "画像を選択してください。")
     private MultipartFile imageFile;
 
     @NotBlank(message = "説明を入力してください。")
